@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 const Textarea = () => {
     const [text,setText] = useState('')
+
     const { TextArea } = Input;
 
     const onChange = e => {
@@ -14,7 +15,8 @@ const Textarea = () => {
     return (
         <div className="textBorder">
             <TextArea value={text} className='textarea-border' showCount maxLength={400} style={{ height: 250 }} onChange={onChange} />
-          <AddTextArea text={text}/>
+          <AddTextArea text={text} setText={setText}/>
+          
         </div>
     )
 }

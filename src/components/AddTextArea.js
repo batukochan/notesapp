@@ -1,42 +1,42 @@
 import React from 'react'
 import { Row, Col } from 'antd';
 import { ButtonGroup, Button } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import {addText} from '../redux/noteSlices/noteSlice'
+import { useDispatch, useSelector } from 'react-redux';
+import { useState} from 'react';
+import { addNotes} from '../redux/noteSlices/noteSlice'
+import { nanoid } from '@reduxjs/toolkit';
 
-const AddTextArea = ({ text }) => {
+
+
+
+const AddTextArea = ({ text,setText }) => {
+    let colors = ["danger", "secondary", "info", "warning", "success"]
+    const [btnColor, setBtnColor] = useState()
     const dispatch = useDispatch()
-
-    const propsText = () => {
-       dispatch(addText({text}))
+    const handleAdd = () => {
+        if (!text || !btnColor) {return false}
+            dispatch(addNotes({
+                id: nanoid(),
+                text,
+                btnColor
+            }))
+        setText('')
     }
 
+return (
+    <Row className="mb-2 mt-5" >
+        <Col span={12} offset={1}>
+            <ButtonGroup size="sm" aria-label="First group" >
+                {colors.map((color, i) => <Button key={i} className="me-2" variant={color} style={{ borderRadius: `50%` }} onClick={() => setBtnColor(color)}> </Button>)}
+            </ButtonGroup>
+        </Col>
+        <Col span={7}></Col>
 
-
-    return (
-        <Row className="mb-2 mt-5" >
-            <Col span={12} offset={1}>
-                <ButtonGroup size="sm" aria-label="First group" >
-                    <Button variant="danger" style={{ borderRadius: `50%` }}>1</Button>{' '}
-                    <Button className="ms-1" variant="secondary" style={{ borderRadius: `50%` }}>2</Button>{' '}
-                    <Button className="ms-1" variant="info" style={{ borderRadius: `50%` }}>3</Button>{' '}
-                    <Button className="ms-1" variant="warning" style={{ borderRadius: `50%` }}>4</Button>{' '}
-                    <Button className="ms-1" variant="success" style={{ borderRadius: `50%` }}>5</Button>
-                </ButtonGroup>
-            </Col>
-            <Col span={7}></Col>
-
-
-            {/* addText - Add Button */}
-            <Col span={4} style={{ textAlign: "center" }}>
-                <Button size="sm" style={{ borderRadius: 25 }} onClick={propsText}>Add</Button>
-            </Col>
-
-
-
-
-        </Row>
-    )
+        <Col span={4} style={{ textAlign: "center" }}>
+            <Button size="sm" style={{ borderRadius: 25 }} onClick={handleAdd} >Add</Button>
+        </Col>
+    </Row>
+)
 }
 
 export default AddTextArea
